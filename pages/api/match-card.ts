@@ -1,5 +1,6 @@
 
 import type { NextApiRequest, NextApiResponse } from "next";
+import sharp from "sharp";
 
 function esc(t) {
   if (!t) return "";
@@ -84,6 +85,12 @@ export default async function handler(req, res) {
 </svg>
   `.trim();
 
-  res.setHeader("Content-Type","image/svg+xml");
-  res.status(200).send(svg);
+  // Convert SVG to PNG using sharp
+  const pngBuffer = await sharp(Buffer.from(svg))
+    .png()
+    .toBuffer();
+
+  res.setHeader("Content-Type", "image/png");
+  res.setHeader("Cache-Control", "public, max-age=60");
+  res.status(200).send(pngBuffer);
 }
