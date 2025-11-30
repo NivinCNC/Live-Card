@@ -5,25 +5,6 @@ export const config = {
   runtime: "edge",
 };
 
-async function fetchImageAsBase64(url: string): Promise<string | null> {
-  if (!url) return null;
-  try {
-    const response = await fetch(url);
-    if (!response.ok) return null;
-    const contentType = response.headers.get("content-type") || "image/png";
-    const arrayBuffer = await response.arrayBuffer();
-    const uint8Array = new Uint8Array(arrayBuffer);
-    let binary = "";
-    for (let i = 0; i < uint8Array.length; i++) {
-      binary += String.fromCharCode(uint8Array[i]);
-    }
-    const base64 = btoa(binary);
-    return `data:${contentType};base64,${base64}`;
-  } catch (e) {
-    return null;
-  }
-}
-
 export default async function handler(req: Request) {
   const { searchParams } = new URL(req.url);
   
@@ -38,13 +19,6 @@ export default async function handler(req: Request) {
 
   const statusText = isLive ? "LIVE" : "UPCOMING";
   const statusColor = isLive ? "#EF4444" : "#6B7280";
-
-  // Fetch images in parallel and convert to base64
-  const [teamAImgData, teamBImgData, eventLogoData] = await Promise.all([
-    fetchImageAsBase64(teamAImg),
-    fetchImageAsBase64(teamBImg),
-    fetchImageAsBase64(eventLogo),
-  ]);
 
   return new ImageResponse(
     (
@@ -61,7 +35,7 @@ export default async function handler(req: Request) {
         }}
       >
         {/* Header */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", width: "100%" }}>
           <span style={{ color: "#E5E7EB", fontSize: "28px" }}>{title}</span>
           <span style={{ color: "#9CA3AF", fontSize: "22px" }}>{time}</span>
         </div>
@@ -74,14 +48,13 @@ export default async function handler(req: Request) {
             borderRadius: "16px",
             padding: "8px 24px",
             marginTop: "10px",
-            width: "fit-content",
           }}
         >
           <span style={{ color: "#FFF", fontSize: "20px" }}>{statusText}</span>
         </div>
 
         {/* Event Logo (center top) */}
-        {eventLogoData && (
+        {eventLogo && (
           <div
             style={{
               position: "absolute",
@@ -97,7 +70,8 @@ export default async function handler(req: Request) {
               overflow: "hidden",
             }}
           >
-            <img src={eventLogoData} width="80" height="80" style={{ objectFit: "cover" }} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={eventLogo} width={80} height={80} style={{ objectFit: "cover" }} />
           </div>
         )}
 
@@ -109,12 +83,14 @@ export default async function handler(req: Request) {
             alignItems: "center",
             flex: 1,
             marginTop: "20px",
+            width: "100%",
           }}
         >
           {/* Team A */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "200px" }}>
-            {teamAImgData ? (
-              <img src={teamAImgData} width="120" height="120" style={{ borderRadius: "50%" }} />
+            {teamAImg ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={teamAImg} width={120} height={120} style={{ borderRadius: "50%" }} />
             ) : (
               <div style={{ width: "120px", height: "120px", borderRadius: "50%", backgroundColor: "#333", display: "flex" }} />
             )}
@@ -126,8 +102,9 @@ export default async function handler(req: Request) {
 
           {/* Team B */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "200px" }}>
-            {teamBImgData ? (
-              <img src={teamBImgData} width="120" height="120" style={{ borderRadius: "50%" }} />
+            {teamBImg ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={teamBImg} width={120} height={120} style={{ borderRadius: "50%" }} />
             ) : (
               <div style={{ width: "120px", height: "120px", borderRadius: "50%", backgroundColor: "#333", display: "flex" }} />
             )}
