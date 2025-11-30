@@ -6,7 +6,26 @@ function esc(t) {
   return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
 
-export default function handler(req, res) {
+async function fetchImageAsBase64(url: string): Promise<string | null> {
+  if (!url) return null;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) return null;
+    const contentType = response.headers.get("content-type") || "image/png";
+    const arrayBuffer = await response.arrayBuffer();
+    const uint8Array = new Uint8Array(arrayBuffer);
+    let binary = "";
+    for (let i = 0; i < uint8Array.length; i++) {
+      binary += String.fromCharCode(uint8Array[i]);
+    }
+    const base64 = btoa(binary);
+    return `data:${contentType};base64,${base64}`;
+  } catch (e) {
+    return null;
+  }
+}
+
+export default async function handler(req, res) {
   const {
     title = "Match",
     teamA = "Team A",
@@ -22,6 +41,13 @@ export default function handler(req, res) {
   const statusText = live ? "LIVE" : "UPCOMING";
   const statusColor = live ? "#EF4444" : "#6B7280";
 
+  // Fetch images in parallel and convert to base64
+  const [teamAImgData, teamBImgData, eventLogoData] = await Promise.all([
+    fetchImageAsBase64(teamAImg as string),
+    fetchImageAsBase64(teamBImg as string),
+    fetchImageAsBase64(eventLogo as string),
+  ]);
+
   const svg = `
 <svg width="900" height="400" viewBox="0 0 900 400"
      xmlns="http://www.w3.org/2000/svg"
@@ -33,11 +59,11 @@ export default function handler(req, res) {
   <text x="105" y="107" text-anchor="middle" fill="#FFF" font-size="20" font-family="Arial">${statusText}</text>
 
   <!-- Event Logo (center top) -->
-  ${eventLogo
+  ${eventLogoData
     ? `
   <g transform="translate(450, 95)">
     <circle cx="0" cy="0" r="40" fill="#0f172a"/>
-    <image href="${esc(eventLogo)}" xlink:href="${esc(eventLogo)}"
+    <image href="${eventLogoData}"
            x="-40" y="-40" width="80" height="80"
            preserveAspectRatio="xMidYMid slice"
            clip-path="url(#teamCircle)" />
@@ -45,10 +71,10 @@ export default function handler(req, res) {
     `
     : ""}
 
-  ${teamAImg ? `<image href="${esc(teamAImg)}" xlink:href="${esc(teamAImg)}" x="160" y="130" width="120" height="120" />`
+  ${teamAImgData ? `<image href="${teamAImgData}" x="160" y="130" width="120" height="120" />`
               : `<circle cx="220" cy="190" r="60" fill="#333"/>`}
 
-  ${teamBImg ? `<image href="${esc(teamBImg)}" xlink:href="${esc(teamBImg)}" x="620" y="130" width="120" height="120" />`
+  ${teamBImgData ? `<image href="${teamBImgData}" x="620" y="130" width="120" height="120" />`
               : `<circle cx="680" cy="190" r="60" fill="#333"/>`}
 
   <text x="450" y="205" text-anchor="middle" fill="#FACC15" font-size="50" font-family="Arial">VS</text>
