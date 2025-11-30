@@ -24,20 +24,20 @@ export default async function handler(req: Request) {
     (
       <div
         style={{
-          width: "600px",
-          height: "320px",
+          width: "480px",
+          height: "280px",
           display: "flex",
           flexDirection: "column",
           backgroundColor: "#111827",
-          borderRadius: "24px",
-          padding: "24px",
+          borderRadius: "20px",
+          padding: "20px",
           position: "relative",
         }}
       >
         {/* Header */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", width: "100%" }}>
-          <span style={{ color: "#E5E7EB", fontSize: "22px" }}>{title}</span>
-          <span style={{ color: "#9CA3AF", fontSize: "18px" }}>{time}</span>
+          <span style={{ color: "#E5E7EB", fontSize: "18px" }}>{title}</span>
+          <span style={{ color: "#9CA3AF", fontSize: "14px" }}>{time}</span>
         </div>
 
         {/* Status Badge */}
@@ -45,12 +45,12 @@ export default async function handler(req: Request) {
           style={{
             display: "flex",
             backgroundColor: statusColor,
-            borderRadius: "12px",
-            padding: "6px 16px",
-            marginTop: "8px",
+            borderRadius: "10px",
+            padding: "4px 12px",
+            marginTop: "6px",
           }}
         >
-          <span style={{ color: "#FFF", fontSize: "16px" }}>{statusText}</span>
+          <span style={{ color: "#FFF", fontSize: "13px" }}>{statusText}</span>
         </div>
 
         {/* Event Logo (center top) */}
@@ -58,10 +58,10 @@ export default async function handler(req: Request) {
           <div
             style={{
               position: "absolute",
-              top: "40px",
-              left: "260px",
-              width: "60px",
-              height: "60px",
+              top: "30px",
+              left: "205px",
+              width: "50px",
+              height: "50px",
               borderRadius: "50%",
               backgroundColor: "#0f172a",
               display: "flex",
@@ -71,7 +71,7 @@ export default async function handler(req: Request) {
             }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={eventLogo} width={60} height={60} style={{ objectFit: "cover" }} />
+            <img src={eventLogo} width={50} height={50} style={{ objectFit: "cover" }} />
           </div>
         )}
 
@@ -82,40 +82,40 @@ export default async function handler(req: Request) {
             justifyContent: "space-between",
             alignItems: "center",
             flex: 1,
-            marginTop: "16px",
+            marginTop: "12px",
             width: "100%",
           }}
         >
           {/* Team A */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "150px" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "120px" }}>
             {teamAImg ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={teamAImg} width={90} height={90} style={{ borderRadius: "50%" }} />
+              <img src={teamAImg} width={70} height={70} style={{ borderRadius: "50%" }} />
             ) : (
-              <div style={{ width: "90px", height: "90px", borderRadius: "50%", backgroundColor: "#333", display: "flex" }} />
+              <div style={{ width: "70px", height: "70px", borderRadius: "50%", backgroundColor: "#333", display: "flex" }} />
             )}
-            <span style={{ color: "#FFF", fontSize: "20px", marginTop: "12px", textAlign: "center" }}>{teamA}</span>
+            <span style={{ color: "#FFF", fontSize: "16px", marginTop: "10px", textAlign: "center" }}>{teamA}</span>
           </div>
 
           {/* VS */}
-          <span style={{ color: "#FACC15", fontSize: "40px" }}>VS</span>
+          <span style={{ color: "#FACC15", fontSize: "32px" }}>VS</span>
 
           {/* Team B */}
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "150px" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "120px" }}>
             {teamBImg ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={teamBImg} width={90} height={90} style={{ borderRadius: "50%" }} />
+              <img src={teamBImg} width={70} height={70} style={{ borderRadius: "50%" }} />
             ) : (
-              <div style={{ width: "90px", height: "90px", borderRadius: "50%", backgroundColor: "#333", display: "flex" }} />
+              <div style={{ width: "70px", height: "70px", borderRadius: "50%", backgroundColor: "#333", display: "flex" }} />
             )}
-            <span style={{ color: "#FFF", fontSize: "20px", marginTop: "12px", textAlign: "center" }}>{teamB}</span>
+            <span style={{ color: "#FFF", fontSize: "16px", marginTop: "10px", textAlign: "center" }}>{teamB}</span>
           </div>
         </div>
       </div>
     ),
     {
-      width: 600,
-      height: 320,
+      width: 480,
+      height: 280,
     }
   );
 }
