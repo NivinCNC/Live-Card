@@ -24,7 +24,8 @@ export default function handler(req, res) {
 
   const svg = `
 <svg width="900" height="400" viewBox="0 0 900 400"
-     xmlns="http://www.w3.org/2000/svg">
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
   <rect width="900" height="400" rx="32" fill="#111827"/>
   <text x="40" y="60" fill="#E5E7EB" font-size="28" font-family="Arial">${esc(title)}</text>
   <text x="860" y="60" text-anchor="end" fill="#9CA3AF" font-size="22" font-family="Arial">${esc(time)}</text>
@@ -36,7 +37,7 @@ export default function handler(req, res) {
     ? `
   <g transform="translate(450, 95)">
     <circle cx="0" cy="0" r="40" fill="#0f172a"/>
-    <image href="${esc(eventLogo)}"
+    <image href="${esc(eventLogo)}" xlink:href="${esc(eventLogo)}"
            x="-40" y="-40" width="80" height="80"
            preserveAspectRatio="xMidYMid slice"
            clip-path="url(#teamCircle)" />
@@ -44,10 +45,10 @@ export default function handler(req, res) {
     `
     : ""}
 
-  ${teamAImg ? `<image href="${esc(teamAImg)}" x="160" y="130" width="120" height="120" />`
+  ${teamAImg ? `<image href="${esc(teamAImg)}" xlink:href="${esc(teamAImg)}" x="160" y="130" width="120" height="120" />`
               : `<circle cx="220" cy="190" r="60" fill="#333"/>`}
 
-  ${teamBImg ? `<image href="${esc(teamBImg)}" x="620" y="130" width="120" height="120" />`
+  ${teamBImg ? `<image href="${esc(teamBImg)}" xlink:href="${esc(teamBImg)}" x="620" y="130" width="120" height="120" />`
               : `<circle cx="680" cy="190" r="60" fill="#333"/>`}
 
   <text x="450" y="205" text-anchor="middle" fill="#FACC15" font-size="50" font-family="Arial">VS</text>
