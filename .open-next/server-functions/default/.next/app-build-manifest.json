@@ -1,0 +1,11 @@
+{
+  "pages": {
+    "/api/match-card/route": [
+      "static/chunks/webpack-9556e8eea9f8efe4.js",
+      "static/chunks/4bd1b696-cf72ae8a39fa05aa.js",
+      "static/chunks/32-4d1e71e6b4f4ac52.js",
+      "static/chunks/main-app-f3a0f7fa1ae6bfca.js",
+      "static/chunks/app/api/match-card/route-83e6503fbb4f81de.js"
+    ]
+  }
+}

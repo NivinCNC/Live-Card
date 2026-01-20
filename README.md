@@ -2,6 +2,8 @@
 
 A dynamic image generation API that creates beautiful match cards for sports events. Perfect for sharing upcoming matches or live game status on social media, Discord, or any platform that supports image embeds.
 
+**Deployed on Cloudflare Workers for global edge performance.**
+
 ![Example Match Card](https://live-card-cncverse.vercel.app/api/match-card?title=UFC%20Fight%20Night&teamA=Fighter%20A&teamB=Fighter%20B&time=10:00%20PM&isLive=true)
 
 ## 🚀 Features
@@ -10,7 +12,7 @@ A dynamic image generation API that creates beautiful match cards for sports eve
 - **Live/Upcoming Status** - Visual indicator for match status
 - **Custom Team Images** - Support for team logos/fighter photos
 - **Event Branding** - Optional event logo in the center
-- **Fast Edge Runtime** - Powered by Vercel Edge Functions
+- **Fast Edge Runtime** - Powered by Cloudflare Workers globally
 
 ## 📖 API Usage
 
@@ -60,26 +62,50 @@ GET /api/match-card
 
 - [Next.js](https://nextjs.org/) - React framework
 - [@vercel/og](https://vercel.com/docs/functions/og-image-generation) - Image generation
-- [Vercel Edge Runtime](https://vercel.com/docs/functions/edge-functions) - Fast serverless execution
+- [Cloudflare Workers](https://workers.cloudflare.com/) - Edge runtime for global performance
 
-## 📦 Installation
+## 📦 Local Development
 
 ```bash
-# Clone the repository
-git clone https://github.com/NivinCNC/Live-Card.git
-
 # Install dependencies
 npm install
 
-# Run development server
+# Run Next.js development server (recommended for local testing)
 npm run dev
 ```
 
-## 🚢 Deployment
+**Note:** `@vercel/og` uses WASM files that have limited support in local Wrangler dev. Use `npm run dev` for local development, which runs Next.js natively.
 
-Deploy to Vercel with one click:
+## 🚢 Deployment to Cloudflare Pages
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/NivinCNC/Live-Card)
+Your API will work perfectly when deployed to Cloudflare Pages!
+
+### Option 1: Via Wrangler CLI
+
+```bash
+# Install dependencies
+npm install
+
+# Login to Cloudflare
+npx wrangler login
+
+# Build and deploy
+npm run deploy
+```
+
+### Option 2: Via Cloudflare Dashboard (Recommended)
+
+1. Go to [Cloudflare Pages](https://dash.cloudflare.com/pages)
+2. Connect your Git repository
+3. Configure build settings:
+   - **Framework preset:** Next.js
+   - **Build command:** `npm run pages:build`
+   - **Build output directory:** `.open-next/worker`
+4. Deploy!
+
+Your API will be available at `https://your-project.pages.dev/api/match-card`
+
+**Note:** The @vercel/og package works when deployed to Cloudflare Pages, but may have issues in local Wrangler dev. Use `npm run dev` for local testing.
 
 ## 📄 License
 
