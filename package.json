@@ -10,7 +10,7 @@
     "deploy": "npm run pages:build && wrangler deploy"
   },
   "dependencies": {
-    "next": "^15.0.0",
+    "next": "15.0.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "satori": "^0.10.14",
